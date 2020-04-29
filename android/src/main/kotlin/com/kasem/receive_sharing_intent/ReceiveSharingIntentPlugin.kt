@@ -121,6 +121,13 @@ class ReceiveSharingIntentPlugin(val registrar: Registrar) :
                 latestText = value
                 eventSinkText?.success(latestText)
             }
+            (intent.type == null || intent.type?.startsWith("text") == true)
+                    && intent.action == Intent.ACTION_PROCESS_TEXT -> { // Sharing from context menu
+                val value = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
+                if (initial) initialText = value
+                latestText = value
+                eventSinkText?.success(latestText)
+            }
             intent.action == Intent.ACTION_VIEW -> { // Opening URL
                 val value = intent.dataString
                 if (initial) initialText = value
